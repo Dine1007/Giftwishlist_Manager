@@ -6,6 +6,28 @@ import axiosInstance from '../axiosConfig';
 const Dashboard = () => {
   const { user } = useAuth();
   const [loading, setLoading] = useState(true);
+  const [wishlists, setWishlists] = useState([]);
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    if (!user) {
+      navigate('/login');
+      return;
+    }
+    const fetchWishlists = async () => {
+      try {
+        const response = await axiosInstance.get('/api/wishlists', {
+          headers: { Authorization: `Bearer ${user.token}` },
+        });
+        setWishlists(response.data);
+      } catch (error) {
+        alert('Failed to fetch wishlists.');
+      } finally {
+        setLoading(false);
+      }
+    };
+    fetchWishlists();
+  }, [user, navigate]);
 
   
 
@@ -20,7 +42,7 @@ const Dashboard = () => {
         </Link>
       </div>
 
-      
+     
     </div>
   );
 };
