@@ -1,5 +1,4 @@
 const Wishlist = require('../models/Wishlist');
-const WishlistItem = require('../models/WishlistItem');
 
 // Create a new wishlist (Owner)
 const createWishlist = async (req, res) => {
@@ -22,29 +21,13 @@ const getMyWishlists = async (req, res) => {
   }
 };
 
-// Get a single wishlist by ID (Owner view - SURPRISE PROTECTION)
-// Owner NEVER sees reserved or purchased status
+// Get a single wishlist by ID 
+// Owner never sees reserved or purchased status
 const getWishlistById = async (req, res) => {
   try {
     const wishlist = await Wishlist.findOne({ _id: req.params.id, owner: req.user.id });
     if (!wishlist) return res.status(404).json({ message: 'Wishlist not found' });
-
-    const items = await WishlistItem.find({ wishlist: wishlist._id });
-
-    // Surprise protection: owner always sees all items as "available"
-    const safeItems = items.map(item => ({
-      _id: item._id,
-      name: item.name,
-      price: item.price,
-      priority: item.priority,
-      url: item.url,
-      status: 'available',
-      wishlist: item.wishlist,
-      createdAt: item.createdAt,
-      updatedAt: item.updatedAt,
-    }));
-
-    res.json({ wishlist, items: safeItems });
+    res.json({ wishlist});
   } catch (error) {
     res.status(500).json({ message: error.message });
   }
@@ -65,40 +48,9 @@ const updateWishlist = async (req, res) => {
   }
 };
 
-// Delete a wishlist and all its items (Owner)
-const deleteWishlist = async (req, res) => {
-  try {
-    const wishlist = await Wishlist.findOneAndDelete({ _id: req.params.id, owner: req.user.id });
-    if (!wishlist) return res.status(404).json({ message: 'Wishlist not found' });
-    await WishlistItem.deleteMany({ wishlist: wishlist._id });
-    res.json({ message: 'Wishlist deleted' });
-  } catch (error) {
-    res.status(500).json({ message: error.message });
-  }
-};
-
-// Get shared wishlist by unique link (Guest view - shows REAL status)
-// No login required to view
-const getSharedWishlist = async (req, res) => {
-  try {
-    const wishlist = await Wishlist.findOne({ shareLink: req.params.shareLink }).populate('owner', 'name');
-    if (!wishlist) return res.status(404).json({ message: 'Wishlist not found' });
-
-    const items = await WishlistItem.find({ wishlist: wishlist._id })
-      //.populate('reservedBy', 'name')
-      //.populate('purchasedBy', 'name');
-
-    res.json({ wishlist, items });
-  } catch (error) {
-    res.status(500).json({ message: error.message });
-  }
-};
-
 module.exports = {
   createWishlist,
   getMyWishlists,
   getWishlistById,
   updateWishlist,
-  deleteWishlist,
-  getSharedWishlist,
 };

@@ -3,6 +3,8 @@ const router = express.Router();
 const {
   createWishlist,
   getMyWishlists,
+  getWishlistById,
+  updateWishlist,
 
 } = require('../controllers/wishlistController');
 const { protect } = require('../middleware/authMiddleware');
@@ -10,5 +12,8 @@ const { protect } = require('../middleware/authMiddleware');
 
 router.post('/', protect, createWishlist);
 router.get('/', protect, getMyWishlists);
+router.get('/:id', protect, getWishlistById);
+router.put('/:id', protect, updateWishlist);
+
 
 module.exports = router;
