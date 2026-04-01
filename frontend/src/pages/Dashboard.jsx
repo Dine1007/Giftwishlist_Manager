@@ -41,7 +41,26 @@ const Dashboard = () => {
           + Create Wishlist
         </Link>
       </div>
-
+      
+      {wishlists.length === 0 ? (
+        <div className="empty-state">
+          <p>You haven't created any wishlists yet.</p>
+          <Link to="/create-wishlist" className="btn btn-primary">
+            Create Your First Wishlist
+          </Link>
+        </div>
+      ) : (
+        wishlists.map((wishlist) => (
+          <div key={wishlist._id} className="wishlist-card">
+            <div className="flex-between">
+                <h2>📋 {wishlist.name}</h2>
+                <p>Created: {new Date(wishlist.createdAt).toLocaleDateString()}</p>
+              </div>
+              
+            
+          </div>
+        ))
+      )}
      
     </div>
   );
