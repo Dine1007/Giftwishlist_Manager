@@ -38,6 +38,32 @@
 }
 
 
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  background-color: #f5ebe0;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  color: #3d2c2c;
+}
+
+
+/* ========== CONTAINERS ========== */
+.container {
+  max-width: 600px;
+  margin: 0 auto;
+  padding: 24px 20px;
+}
+
+.container-wide {
+  max-width: 700px;
+  margin: 0 auto;
+  padding: 24px 20px;
+}
+
 
 
 /* ========== BUTTONS ========== */
@@ -130,4 +156,40 @@
   font-size: 0.95rem;
   background-color: #fff;
   color: #3d2c2c;
+}
+
+/* ========== CARDS ========== */
+.card {
+  background-color: #faf3eb;
+  border-radius: 12px;
+  padding: 20px;
+  margin-bottom: 16px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+  border: 1px solid #e6d5c3;
+}
+
+.wishlist-card {
+  background-color: #faf3eb;
+  border-radius: 12px;
+  padding: 20px;
+  margin-bottom: 14px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+  border: 1px solid #e6d5c3;
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+.wishlist-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.12);
+}
+
+.wishlist-card h2 {
+  margin: 0 0 6px 0;
+  color: #6b3a3a;
+  font-size: 1.15rem;
+}
+
+.wishlist-card p {
+  margin: 0;
+  color: #7a5c5c;
+  font-size: 0.85rem;
 }
