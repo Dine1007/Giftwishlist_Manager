@@ -48,9 +48,21 @@ const updateWishlist = async (req, res) => {
   }
 };
 
+// Delete a wishlist and all its items (Owner)
+const deleteWishlist = async (req, res) => {
+  try {
+    const wishlist = await Wishlist.findOneAndDelete({ _id: req.params.id, owner: req.user.id });
+    if (!wishlist) return res.status(404).json({ message: 'Wishlist not found' });
+    res.json({ message: 'Wishlist deleted' });
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+};
+
 module.exports = {
   createWishlist,
   getMyWishlists,
   getWishlistById,
   updateWishlist,
+  deleteWishlist,
 };

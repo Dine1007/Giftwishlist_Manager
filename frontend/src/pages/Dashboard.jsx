@@ -29,7 +29,17 @@ const Dashboard = () => {
     fetchWishlists();
   }, [user, navigate]);
 
-  
+  const handleDelete = async (id) => {
+    if (!window.confirm('Are you sure you want to delete this wishlist?')) return;
+    try {
+      await axiosInstance.delete(`/api/wishlists/${id}`, {
+        headers: { Authorization: `Bearer ${user.token}` },
+      });
+      setWishlists(wishlists.filter((w) => w._id !== id));
+    } catch (error) {
+      alert('Failed to delete wishlist.');
+    }
+  };
 
   if (loading) return <div className="loading">Loading your wishlists...</div>;
 
@@ -58,6 +68,14 @@ const Dashboard = () => {
               >
                 <h2>📋 {wishlist.name}</h2>
                 <p>Created: {new Date(wishlist.createdAt).toLocaleDateString()}</p>
+              </div>
+              <div className="flex-gap">
+                <button
+                  onClick={() => handleDelete(wishlist._id)}
+                  className="btn btn-danger btn-sm"
+                >
+                  Delete
+                </button>
               </div>
               
             
