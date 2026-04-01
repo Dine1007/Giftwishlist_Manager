@@ -52,7 +52,10 @@ const Dashboard = () => {
       ) : (
         wishlists.map((wishlist) => (
           <div key={wishlist._id} className="wishlist-card">
-            <div className="flex-between">
+            <div className="flex-between"
+                onClick={() => navigate(`/wishlist/${wishlist._id}`)}
+                style={{ cursor: 'pointer', flex: 1 }}
+              >
                 <h2>📋 {wishlist.name}</h2>
                 <p>Created: {new Date(wishlist.createdAt).toLocaleDateString()}</p>
               </div>

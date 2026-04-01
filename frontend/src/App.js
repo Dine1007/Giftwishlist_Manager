@@ -6,6 +6,7 @@ import Profile from './pages/Profile';
 import Tasks from './pages/Tasks';
 import Dashboard from './pages/Dashboard';
 import CreateWishlist from './pages/CreateWishlist';
+import WishlistDetail from './pages/WishlistDetail';
 import './App.css';
 
 function App() {
@@ -19,6 +20,7 @@ function App() {
         <Route path="/dashboard" element={<Dashboard />} />
         <Route path="/create-wishlist" element={<CreateWishlist />} />
         <Route path="/tasks" element={<Tasks />} />
+        <Route path="/wishlist/:id" element={<WishlistDetail />} />
       </Routes>
     </Router>
   );

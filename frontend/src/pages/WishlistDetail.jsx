@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useAuth } from '../context/AuthContext';
-import { useParams, useNavigate, Link } from 'react-router-dom';
+import { useParams, useNavigate } from 'react-router-dom';
 import axiosInstance from '../axiosConfig';
 
 const WishlistDetail = () => {
@@ -8,7 +8,7 @@ const WishlistDetail = () => {
   const { id } = useParams();
   const navigate = useNavigate();
   const [wishlist, setWishlist] = useState(null);
-  const [items, setItems] = useState([]);
+										 
   const [loading, setLoading] = useState(true);
   const [editingName, setEditingName] = useState(false);
   const [newName, setNewName] = useState('');
@@ -27,7 +27,7 @@ const WishlistDetail = () => {
         headers: { Authorization: `Bearer ${user.token}` },
       });
       setWishlist(response.data.wishlist);
-      setItems(response.data.items);
+									
       setNewName(response.data.wishlist.name);
     } catch (error) {
       alert('Failed to load wishlist.');
@@ -37,13 +37,26 @@ const WishlistDetail = () => {
     }
   };
 
-  
+  const handleUpdateName = async () => {
+    try {
+      const response = await axiosInstance.put(
+        `/api/wishlists/${id}`,
+        { name: newName },
+        { headers: { Authorization: `Bearer ${user.token}` } }
+      );
+      setWishlist(response.data);
+      setEditingName(false);
+    } catch (error) {
+      alert('Failed to update wishlist name.');
+    }
+  };
+
   if (loading) return <div className="loading">Loading wishlist...</div>;
   if (!wishlist) return <div className="loading">Wishlist not found.</div>;
 
   return (
     <div className="container">
-      {/* Wishlist Header */}
+      {/* Wishlist Header with Edit Name */}
       <div className="card mb-4">
         {editingName ? (
           <div>
@@ -72,8 +85,8 @@ const WishlistDetail = () => {
         )}
       </div>
 
-      
-      
+	  
+	  
       <div className="text-center mt-4">
         <button onClick={() => navigate('/dashboard')} className="btn btn-outline">
           ← Back to Dashboard
