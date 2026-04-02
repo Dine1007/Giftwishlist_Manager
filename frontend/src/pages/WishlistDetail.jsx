@@ -51,6 +51,18 @@ const WishlistDetail = () => {
     }
   };
 
+  const handleDeleteItem = async (itemId) => {
+    if (!window.confirm('Are you sure you want to delete this item?')) return;
+    try {
+      await axiosInstance.delete(`/api/wishlists/${id}/items/${itemId}`, {
+        headers: { Authorization: `Bearer ${user.token}` },
+      });
+      setItems(items.filter((item) => item._id !== itemId));
+    } catch (error) {
+      alert('Failed to delete item.');
+    }
+  };
+
   if (loading) return <div className="loading">Loading wishlist...</div>;
   if (!wishlist) return <div className="loading">Wishlist not found.</div>;
 
@@ -93,7 +105,7 @@ const WishlistDetail = () => {
             
           </div>
         
-          {/* Item List */}
+          {/* Items List */}
       {items.length === 0 ? (
         <div className="empty-state">
           <p>No items in this wishlist yet.</p>
@@ -127,6 +139,12 @@ const WishlistDetail = () => {
                 className="btn btn-primary btn-sm"
               >
                 Edit
+              </button>
+              <button
+                onClick={() => handleDeleteItem(item._id)}
+                className="btn btn-danger btn-sm"
+              >
+                Delete
               </button>
             </div>
           </div>
