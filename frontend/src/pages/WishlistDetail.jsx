@@ -1,15 +1,15 @@
 import { useState, useEffect } from 'react';
 import { useAuth } from '../context/AuthContext';
-import { useParams, useNavigate } from 'react-router-dom';
+import { useParams, useNavigate, Link } from 'react-router-dom';
 import axiosInstance from '../axiosConfig';
 
 const WishlistDetail = () => {
   const { user } = useAuth();
   const { id } = useParams();
   const navigate = useNavigate();
-  const [wishlist, setWishlist] = useState(null);
-										 
+  const [wishlist, setWishlist] = useState(null);					 
   const [loading, setLoading] = useState(true);
+  const [items, setItems] = useState([]);
   const [editingName, setEditingName] = useState(false);
   const [newName, setNewName] = useState('');
 
@@ -26,9 +26,9 @@ const WishlistDetail = () => {
       const response = await axiosInstance.get(`/api/wishlists/${id}`, {
         headers: { Authorization: `Bearer ${user.token}` },
       });
-      setWishlist(response.data.wishlist);
-									
+      setWishlist(response.data.wishlist);						
       setNewName(response.data.wishlist.name);
+      setItems(response.data.items);
     } catch (error) {
       alert('Failed to load wishlist.');
       navigate('/dashboard');
@@ -48,6 +48,18 @@ const WishlistDetail = () => {
       setEditingName(false);
     } catch (error) {
       alert('Failed to update wishlist name.');
+    }
+  };
+
+  const handleDeleteItem = async (itemId) => {
+    if (!window.confirm('Are you sure you want to delete this item?')) return;
+    try {
+      await axiosInstance.delete(`/api/wishlists/${id}/items/${itemId}`, {
+        headers: { Authorization: `Bearer ${user.token}` },
+      });
+      setItems(items.filter((item) => item._id !== itemId));
+    } catch (error) {
+      alert('Failed to delete item.');
     }
   };
 
@@ -85,7 +97,59 @@ const WishlistDetail = () => {
         )}
       </div>
 
-	  
+	  {/* Action Buttons */}
+          <div className="flex-between mb-4">
+            <Link to={`/wishlist/${id}/add-item`} className="btn btn-primary">
+              + Add Item
+            </Link>
+            
+          </div>
+        
+          {/* Items List */}
+      {items.length === 0 ? (
+        <div className="empty-state">
+          <p>No items in this wishlist yet.</p>
+          <Link to={`/wishlist/${id}/add-item`} className="btn btn-primary">
+            Add Your First Item
+          </Link>
+        </div>
+      ) : (
+        items.map((item) => (
+          <div key={item._id} className="item-card">
+            <div className="item-header">
+              <span className="item-name">{item.name}</span>
+              <span className="item-price">${item.price}</span>
+            </div>
+            <div className="item-details">
+              <span className={`priority-${item.priority.toLowerCase()}`}>
+                {item.priority} Priority
+              </span>
+              {item.url && (
+                <span>
+                  {' · '}
+                  <a href={item.url} target="_blank" rel="noreferrer" className="text-link">
+                    View Link
+                  </a>
+                </span>
+              )}
+            </div>
+            <div className="item-actions">
+              <button
+                onClick={() => navigate(`/wishlist/${id}/edit-item/${item._id}`)}
+                className="btn btn-primary btn-sm"
+              >
+                Edit
+              </button>
+              <button
+                onClick={() => handleDeleteItem(item._id)}
+                className="btn btn-danger btn-sm"
+              >
+                Delete
+              </button>
+            </div>
+          </div>
+        ))
+      )}
 	  
       <div className="text-center mt-4">
         <button onClick={() => navigate('/dashboard')} className="btn btn-outline">
