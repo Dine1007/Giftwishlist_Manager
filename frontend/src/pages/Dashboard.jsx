@@ -71,6 +71,12 @@ const Dashboard = () => {
               </div>
               <div className="flex-gap">
                 <button
+                  onClick={() => navigate(`/wishlist/${wishlist._id}/share`)}
+                  className="btn btn-primary btn-sm"
+                >
+                  Share
+                </button>
+                <button
                   onClick={() => handleDelete(wishlist._id)}
                   className="btn btn-danger btn-sm"
                 >

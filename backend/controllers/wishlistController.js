@@ -73,10 +73,27 @@ const deleteWishlist = async (req, res) => {
   }
 };
 
+// Get shared wishlist by unique link (Guest view - shows REAL status)
+const getSharedWishlist = async (req, res) => {
+  try {
+    const wishlist = await Wishlist.findOne({ shareLink: req.params.shareLink }).populate('owner', 'name');
+    if (!wishlist) return res.status(404).json({ message: 'Wishlist not found' });
+
+    const items = await WishlistItem.find({ wishlist: wishlist._id })
+      //.populate('reservedBy', 'name')
+      //.populate('purchasedBy', 'name');
+
+    res.json({ wishlist, items });
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+};
+
 module.exports = {
   createWishlist,
   getMyWishlists,
   getWishlistById,
   updateWishlist,
   deleteWishlist,
+  getSharedWishlist,
 };

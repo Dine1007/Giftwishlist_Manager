@@ -9,6 +9,7 @@ import CreateWishlist from './pages/CreateWishlist';
 import WishlistDetail from './pages/WishlistDetail';
 import AddItem from './pages/AddItem';
 import EditItem from './pages/EditItem';
+import ShareWishlist from './pages/ShareWishlist';
 import './App.css';
 
 function App() {
@@ -25,6 +26,7 @@ function App() {
         <Route path="/wishlist/:id" element={<WishlistDetail />} />
         <Route path="/wishlist/:id/add-item" element={<AddItem />} /> 
         <Route path="/wishlist/:id/edit-item/:itemId" element={<EditItem />} />
+        <Route path="/wishlist/:id/share" element={<ShareWishlist />} />
       </Routes>
     </Router>
   );
