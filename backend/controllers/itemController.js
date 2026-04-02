@@ -39,10 +39,24 @@ const updateItem = async (req, res) => {
   }
 };
 
+// Delete an item (Owner only)
+const deleteItem = async (req, res) => {
+  try {
+    const wishlist = await Wishlist.findOne({ _id: req.params.wishlistId, owner: req.user.id });
+    if (!wishlist) return res.status(404).json({ message: 'Wishlist not found' });
+
+    const item = await WishlistItem.findOneAndDelete({ _id: req.params.itemId, wishlist: wishlist._id });
+    if (!item) return res.status(404).json({ message: 'Item not found' });
+    res.json({ message: 'Item deleted' });
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+};
+
 
 
 module.exports = {
   addItem,
   updateItem,
-  
+  deleteItem,
 };
