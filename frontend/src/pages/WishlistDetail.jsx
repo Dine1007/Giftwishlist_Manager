@@ -121,7 +121,14 @@ const WishlistDetail = () => {
                 </span>
               )}
             </div>
-            
+            <div className="item-actions">
+              <button
+                onClick={() => navigate(`/wishlist/${id}/edit-item/${item._id}`)}
+                className="btn btn-primary btn-sm"
+              >
+                Edit
+              </button>
+            </div>
           </div>
         ))
       )}

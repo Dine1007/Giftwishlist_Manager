@@ -8,6 +8,7 @@ import Dashboard from './pages/Dashboard';
 import CreateWishlist from './pages/CreateWishlist';
 import WishlistDetail from './pages/WishlistDetail';
 import AddItem from './pages/AddItem';
+import EditItem from './pages/EditItem';
 import './App.css';
 
 function App() {
@@ -23,6 +24,7 @@ function App() {
         <Route path="/tasks" element={<Tasks />} />
         <Route path="/wishlist/:id" element={<WishlistDetail />} />
         <Route path="/wishlist/:id/add-item" element={<AddItem />} /> 
+        <Route path="/wishlist/:id/edit-item/:itemId" element={<EditItem />} />
       </Routes>
     </Router>
   );
