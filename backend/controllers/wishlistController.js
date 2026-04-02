@@ -23,7 +23,6 @@ const getMyWishlists = async (req, res) => {
 };
 
 // Get a single wishlist by ID 
-// Owner never sees reserved or purchased status
 const getWishlistById = async (req, res) => {
   try {
     const wishlist = await Wishlist.findOne({ _id: req.params.id, owner: req.user.id });
