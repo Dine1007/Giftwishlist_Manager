@@ -75,6 +75,7 @@ const reserveItem = async (req, res) => {
 
     const populated = await WishlistItem.findById(item._id)
       .populate('reservedBy', 'name')
+      .populate('purchasedBy', 'name');
     res.json(populated);
   } catch (error) {
     res.status(500).json({ message: error.message });

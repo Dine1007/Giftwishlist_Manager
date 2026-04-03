@@ -62,7 +62,8 @@ const Dashboard = () => {
       ) : (
         wishlists.map((wishlist) => (
           <div key={wishlist._id} className="wishlist-card">
-            <div className="flex-between"
+            <div className="flex-between">
+              <div
                 onClick={() => navigate(`/wishlist/${wishlist._id}`)}
                 style={{ cursor: 'pointer', flex: 1 }}
               >
@@ -83,7 +84,7 @@ const Dashboard = () => {
                   Delete
                 </button>
               </div>
-              
+              </div>
             
           </div>
         ))
