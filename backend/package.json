@@ -1,7 +1,7 @@
 {
-  "name": "task-manager-backend",
+  "name": "gift-wishlist-manager-backend",
   "version": "1.0.0",
-  "description": "Backend for Task Manager App",
+  "description": "Backend for Gift Wishlist Manager App",
   "main": "server.js",
   "scripts": {
     "test": "mocha",
@@ -11,6 +11,7 @@
   },
   "dependencies": {
     "bcrypt": "^5.0.1",
+    "bootstrap": "^5.3.8",
     "chai-http": "^4.3.0",
     "cors": "^2.8.5",
     "dotenv": "^10.0.0",
@@ -20,12 +21,12 @@
     "request": "^2.88.2"
   },
   "devDependencies": {
-    "chai": "^6.2.2",
+    "chai": "^4.3.7",
     "esm": "^3.2.25",
     "mocha": "^11.7.5",
     "nodemon": "^2.0.15",
     "sinon": "^19.0.5"
   },
-  "author": "Gift Wishlist Manager",
+  "author": "Wishlist Manager Team",
   "license": "ISC"
 }
