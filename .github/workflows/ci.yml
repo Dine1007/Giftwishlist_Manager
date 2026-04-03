@@ -45,7 +45,6 @@ jobs:
           yarn install
 
       - name: Install Frontend Dependencies
-        working-directory: ./frontend
         run: |
           df -h
           sudo rm -rf ./build
