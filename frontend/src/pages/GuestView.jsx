@@ -51,23 +51,23 @@ const GuestView = () => {
   };
 
   const handleUnreserve = async (itemId) => {
-      setActionLoading(itemId);
-      try {
-        const response = await axiosInstance.put(
-          `/api/wishlists/items/${itemId}/unreserve`,
-          {},
-          { headers: { Authorization: `Bearer ${user.token}` } }
-        );
-        // Response won't have populated fields, refetch to get updated data
-        await fetchSharedWishlist();
-      } catch (err) {
-        alert(err.response?.data?.message || 'Failed to un-reserve item.');
-      } finally {
-        setActionLoading('');
-      }
-    };
+    setActionLoading(itemId);
+    try {
+      const response = await axiosInstance.put(
+        `/api/wishlists/items/${itemId}/unreserve`,
+        {},
+        { headers: { Authorization: `Bearer ${user.token}` } }
+      );
+      // Response won't have populated fields, refetch to get updated data
+      await fetchSharedWishlist();
+    } catch (err) {
+      alert(err.response?.data?.message || 'Failed to un-reserve item.');
+    } finally {
+      setActionLoading('');
+    }
+  };
 
-    const handlePurchase = async (itemId) => {
+  const handlePurchase = async (itemId) => {
     if (!window.confirm('Mark this item as purchased? This action is permanent.')) return;
     setActionLoading(itemId);
     try {
@@ -92,14 +92,16 @@ const GuestView = () => {
         return <span className="badge badge-reserved">Reserved</span>;
       case 'purchased':
         return <span className="badge badge-purchased">Purchased</span>;
-
       default:
         return null;
     }
   };
 
   const renderItemActions = (item) => {
-    
+    // Purchased items are permanently closed - no actions
+    if (item.status === 'purchased') {
+      return <p style={{ color: '#922b21', fontSize: '0.85rem', margin: 0 }}>✅ This item has been purchased</p>;
+    }
 
     // If not logged in, show reserve button that redirects to register
     if (!user) {
@@ -150,7 +152,6 @@ const GuestView = () => {
             >
               {actionLoading === item._id ? '...' : 'Mark as Purchased'}
             </button>
-            
           </div>
         );
       }
@@ -162,8 +163,6 @@ const GuestView = () => {
         </p>
       );
     }
-
-    
 
     return null;
   };

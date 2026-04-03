@@ -11,12 +11,13 @@ const {
 } = require('../controllers/wishlistController');
 const { protect } = require('../middleware/authMiddleware');
 
+router.get('/share/:shareLink', getSharedWishlist);
 
 router.post('/', protect, createWishlist);
 router.get('/', protect, getMyWishlists);
 router.get('/:id', protect, getWishlistById);
 router.put('/:id', protect, updateWishlist);
 router.delete('/:id', protect, deleteWishlist);
-router.get('/shared/:shareLink', getSharedWishlist); // No auth required for shared view
+ // No auth required for shared view
 
 module.exports = router;

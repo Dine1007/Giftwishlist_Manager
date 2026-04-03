@@ -22,6 +22,7 @@ const CreateWishlist = () => {
         { name },
         { headers: { Authorization: `Bearer ${user.token}` } }
       );
+      navigate(`/wishlist/${response.data._id}`);
       
     } catch (err) {
       setError('Failed to create wishlist. Please try again.');
