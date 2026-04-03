@@ -50,7 +50,22 @@ const GuestView = () => {
     }
   };
 
-  
+  const handleUnreserve = async (itemId) => {
+      setActionLoading(itemId);
+      try {
+        const response = await axiosInstance.put(
+          `/api/wishlists/items/${itemId}/unreserve`,
+          {},
+          { headers: { Authorization: `Bearer ${user.token}` } }
+        );
+        // Response won't have populated fields, refetch to get updated data
+        await fetchSharedWishlist();
+      } catch (err) {
+        alert(err.response?.data?.message || 'Failed to un-reserve item.');
+      } finally {
+        setActionLoading('');
+      }
+    };
 
   const getStatusBadge = (status) => {
     switch (status) {
@@ -92,6 +107,32 @@ const GuestView = () => {
         >
           {actionLoading === item._id ? 'Reserving...' : 'Reserve'}
         </button>
+      );
+    }
+
+    if (item.status === 'reserved') {
+      // Check if current user reserved this item
+      const isMyReservation = item.reservedBy && item.reservedBy._id === user.id;
+
+      if (isMyReservation) {
+        return (
+          <div className="flex-gap">
+            <button
+              onClick={() => handleUnreserve(item._id)}
+              className="btn btn-unreserve btn-sm"
+              disabled={actionLoading === item._id}
+            >
+              {actionLoading === item._id ? '...' : 'Un-reserve'}
+            </button>
+          </div>
+        );
+      }
+
+      // Someone else reserved it
+      return (
+        <p style={{ color: '#6b5b95', fontSize: '0.85rem', margin: 0 }}>
+          🔒 This item has been reserved
+        </p>
       );
     }
 
