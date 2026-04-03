@@ -19,7 +19,7 @@ const WishlistDetail = () => {
       return;
     }
     fetchWishlist();
-  }, [user, id, navigate]);
+  }, [user, id, navigate]); 
 
   const fetchWishlist = async () => {
     try {
