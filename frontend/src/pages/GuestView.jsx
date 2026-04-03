@@ -67,13 +67,32 @@ const GuestView = () => {
       }
     };
 
+    const handlePurchase = async (itemId) => {
+    if (!window.confirm('Mark this item as purchased? This action is permanent.')) return;
+    setActionLoading(itemId);
+    try {
+      const response = await axiosInstance.put(
+        `/api/wishlists/items/${itemId}/purchase`,
+        {},
+        { headers: { Authorization: `Bearer ${user.token}` } }
+      );
+      setItems(items.map((item) => (item._id === itemId ? response.data : item)));
+    } catch (err) {
+      alert(err.response?.data?.message || 'Failed to mark as purchased.');
+    } finally {
+      setActionLoading('');
+    }
+  };
+
   const getStatusBadge = (status) => {
     switch (status) {
       case 'available':
         return <span className="badge badge-available">Available</span>;
       case 'reserved':
         return <span className="badge badge-reserved">Reserved</span>;
-      
+      case 'purchased':
+        return <span className="badge badge-purchased">Purchased</span>;
+
       default:
         return null;
     }
@@ -124,6 +143,14 @@ const GuestView = () => {
             >
               {actionLoading === item._id ? '...' : 'Un-reserve'}
             </button>
+            <button
+              onClick={() => handlePurchase(item._id)}
+              className="btn btn-purchased btn-sm"
+              disabled={actionLoading === item._id}
+            >
+              {actionLoading === item._id ? '...' : 'Mark as Purchased'}
+            </button>
+            
           </div>
         );
       }
