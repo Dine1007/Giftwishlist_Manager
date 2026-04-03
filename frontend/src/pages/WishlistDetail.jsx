@@ -102,6 +102,9 @@ const WishlistDetail = () => {
             <Link to={`/wishlist/${id}/add-item`} className="btn btn-primary">
               + Add Item
             </Link>
+            <Link to={`/wishlist/${id}/share`} className="btn btn-dark">
+              Share Wishlist
+            </Link>
             
           </div>
         
@@ -112,6 +115,7 @@ const WishlistDetail = () => {
           <Link to={`/wishlist/${id}/add-item`} className="btn btn-primary">
             Add Your First Item
           </Link>
+          
         </div>
       ) : (
         items.map((item) => (

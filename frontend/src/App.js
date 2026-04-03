@@ -10,6 +10,7 @@ import WishlistDetail from './pages/WishlistDetail';
 import AddItem from './pages/AddItem';
 import EditItem from './pages/EditItem';
 import ShareWishlist from './pages/ShareWishlist';
+import GuestView from './pages/GuestView';
 import './App.css';
 
 function App() {
@@ -25,8 +26,9 @@ function App() {
         <Route path="/tasks" element={<Tasks />} />
         <Route path="/wishlist/:id" element={<WishlistDetail />} />
         <Route path="/wishlist/:id/add-item" element={<AddItem />} /> 
-        <Route path="/wishlist/:id/edit-item/:itemId" element={<EditItem />} />
+        <Route path="/wishlist/:wishlistId/edit-item/:itemId" element={<EditItem />} />
         <Route path="/wishlist/:id/share" element={<ShareWishlist />} />
+        <Route path="/shared/:shareLink" element={<GuestView />} /> 
       </Routes>
     </Router>
   );
