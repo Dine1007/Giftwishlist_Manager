@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { useAuth } from '../context/AuthContext';
 import { useParams, useNavigate, Link } from 'react-router-dom';
 import axiosInstance from '../axiosConfig';
@@ -13,11 +13,11 @@ const GuestView = () => {
   const [error, setError] = useState('');
   const [actionLoading, setActionLoading] = useState('');
 
-  useEffect(() => {
-    fetchSharedWishlist();
-  }, [shareLink]);
+				   
+						  
+				  
 
-  const fetchSharedWishlist = async () => {
+  const fetchSharedWishlist = useCallback(async () => {
     try {
       const response = await axiosInstance.get(`/api/wishlists/share/${shareLink}`);
       setWishlist(response.data.wishlist);
@@ -27,7 +27,11 @@ const GuestView = () => {
     } finally {
       setLoading(false);
     }
-  };
+  }, [shareLink]);
+
+  useEffect(() => {
+    fetchSharedWishlist();
+  }, [fetchSharedWishlist]);
 
   const handleReserve = async (itemId) => {
     if (!user) {
@@ -53,7 +57,7 @@ const GuestView = () => {
   const handleUnreserve = async (itemId) => {
     setActionLoading(itemId);
     try {
-      const response = await axiosInstance.put(
+      await axiosInstance.put(
         `/api/wishlists/items/${itemId}/unreserve`,
         {},
         { headers: { Authorization: `Bearer ${user.token}` } }
