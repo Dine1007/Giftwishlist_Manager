@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { useAuth } from '../context/AuthContext';
 import { useParams, useNavigate, Link } from 'react-router-dom';
 import axiosInstance from '../axiosConfig';
@@ -13,15 +13,7 @@ const WishlistDetail = () => {
   const [editingName, setEditingName] = useState(false);
   const [newName, setNewName] = useState('');
 
-  useEffect(() => {
-    if (!user) {
-      navigate('/login');
-      return;
-    }
-    fetchWishlist();
-  }, [user, id, navigate]); 
-
-  const fetchWishlist = async () => {
+  const fetchWishlist = useCallback(async () => {
     try {
       const response = await axiosInstance.get(`/api/wishlists/${id}`, {
         headers: { Authorization: `Bearer ${user.token}` },
@@ -35,7 +27,15 @@ const WishlistDetail = () => {
     } finally {
       setLoading(false);
     }
-  };
+  }, [id, user, navigate]);
+
+  useEffect(() => {
+    if (!user) {
+      navigate('/login');
+      return;
+    }
+    fetchWishlist();
+  }, [user, id, navigate, fetchWishlist]); 
 
   const handleUpdateName = async () => {
     try {
