@@ -11,29 +11,24 @@ const Navbar = () => {
   };
 
   return (
-    <nav className="bg-blue-600 text-white p-4 flex justify-between items-center">
-      <Link to="/" className="text-2xl font-bold">Your apps name</Link>
-      <div>
+    <nav className="navbar">
+      <Link to="/" className="navbar-brand">
+        🎁 Gift Wishlist
+      </Link>
+      <div className="navbar-links">
         {user ? (
           <>
-            <Link to="/tasks" className="mr-4">CRUD</Link>
-            <Link to="/profile" className="mr-4">Profile</Link>
-            <button
-              onClick={handleLogout}
-              className="bg-red-500 px-4 py-2 rounded hover:bg-red-700"
-            >
+            <span style={{ color: '#6b3a3a', fontWeight: '600' }}>Welcome, {user.name}</span>
+            <Link to="/dashboard">My Wishlists</Link>
+            <Link to="/profile">Profile</Link>
+            <button onClick={handleLogout} className="btn-logout">
               Logout
             </button>
           </>
         ) : (
           <>
-            <Link to="/login" className="mr-4">Login</Link>
-            <Link
-              to="/register"
-              className="bg-green-500 px-4 py-2 rounded hover:bg-green-700"
-            >
-              Register
-            </Link>
+            <Link to="/login">Login</Link>
+            <Link to="/register">Register</Link>
           </>
         )}
       </div>
