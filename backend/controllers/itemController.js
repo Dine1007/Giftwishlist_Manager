@@ -81,9 +81,35 @@ const reserveItem = async (req, res) => {
   }
 };
 
+// Un-reserve an item (Only the guest who reserved it)
+const unreserveItem = async (req, res) => {
+  try {
+    const item = await WishlistItem.findById(req.params.itemId);
+    if (!item) return res.status(404).json({ message: 'Item not found' });
+
+    if (item.status !== 'reserved') {
+      return res.status(400).json({ message: 'Item is not currently reserved' });
+    }
+
+    if (item.reservedBy.toString() !== req.user.id) {
+      return res.status(403).json({ message: 'You can only un-reserve items you reserved' });
+    }
+
+    item.status = 'available';
+    item.reservedBy = null;
+    await item.save();
+
+    res.json(item);
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+};
+
+
 module.exports = {
   addItem,
   updateItem,
   deleteItem,
   reserveItem,
+  unreserveItem,
 };
