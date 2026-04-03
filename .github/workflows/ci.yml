@@ -35,7 +35,10 @@ jobs:
           echo "Secret 2 is: $JWT_SECRET"
           echo "Secret 3 is: $PORT"
 
-      - run: pm2 stop all
+      - name: Stop PM2 Processes
+        run: |
+          pm2 stop all || echo "No PM2 processes running"
+          exit 0
 
       - name: Install Backend Dependencies
         working-directory: ./backend
