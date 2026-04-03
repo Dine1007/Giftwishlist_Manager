@@ -8,6 +8,7 @@ const wishlistItemSchema = new mongoose.Schema({
   wishlist: { type: mongoose.Schema.Types.ObjectId, ref: 'Wishlist', required: true },
   status: { type: String, enum: ['available', 'reserved', 'purchased'], default: 'available' },
   reservedBy: { type: mongoose.Schema.Types.ObjectId, ref: 'User', default: null },
+  purchasedBy: { type: mongoose.Schema.Types.ObjectId, ref: 'User', default: null },
     
 }, { timestamps: true });
 

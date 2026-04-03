@@ -105,6 +105,34 @@ const unreserveItem = async (req, res) => {
   }
 };
 
+// Mark an item as purchased (Only the guest who reserved it)
+const purchaseItem = async (req, res) => {
+  try {
+    const item = await WishlistItem.findById(req.params.itemId);
+    if (!item) return res.status(404).json({ message: 'Item not found' });
+
+    if (item.status !== 'reserved') {
+      return res.status(400).json({ message: 'Item must be reserved before marking as purchased' });
+    }
+
+    if (item.reservedBy.toString() !== req.user.id) {
+      return res.status(403).json({ message: 'You can only mark items you reserved as purchased' });
+    }
+
+    item.status = 'purchased';
+    item.purchasedBy = req.user.id;
+    item.reservedBy = null;
+    await item.save();
+
+    const populated = await WishlistItem.findById(item._id)
+      .populate('reservedBy', 'name')
+      .populate('purchasedBy', 'name');
+    res.json(populated);
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+};
+
 
 module.exports = {
   addItem,
@@ -112,4 +140,5 @@ module.exports = {
   deleteItem,
   reserveItem,
   unreserveItem,
+  purchaseItem,
 };
