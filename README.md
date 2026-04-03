@@ -1,24 +1,22 @@
+Gift Wishlist Manager
 
-**Assessment 1.2 (Total Marks **20**)**
+A wishlist app where you create a gift list, share it with friends, and they can reserve or buy items — without ruining the surprise. Built with React, Node.js, Express, and MongoDB.
+What it does
 
-Assignment: **Software requirements analysis and design (**Full-Stack CRUD Application Development with DevOps Practices**)**
+Owners create wishlists, add/edit/delete items, and share a link with friends
+Guests open the link, browse items, and reserve or mark them as purchased
+Surprise protection — the owner never sees what's been reserved or bought
 
+Branches
 
----
+feature/auth — login and register
+feature/wishlist-management — create, edit, delete wishlists
+feature/item-management — add, edit, delete items
+feature/guest-interaction — share, reserve, unreserve, purchase
+feature/testing-cicd — unit tests and CI/CD pipeline
 
-**Objective**
+Testing
+Backend tests using Mocha, Chai, and Sinon. Run with npm test in the backend folder.
 
-For this assessment, you have already been assigned a project. Your task is to develop a system that implements CRUD (Create, Read, Update, Delete) operations based on the selected project. The system should include both a user panel and an admin panel. Depending on the nature of your chosen project, you may decide how many CRUD operations are required to support the functionality of the system. You have been provided with a starter project that includes user authentication using Node.js, React.js, and MongoDB, your should extend this application based on your assigned project requirements. Ensure that the implemented features are appropriate and meaningful for your selected project. Your project should include the following:
-In this assignment you will complete the following tasks:
-
-* **Basic Version Control using GitHub**
-* **Development, CI/CD Integration for Automated Deployment**
-* **Project report**
-
- 
----
-
-**GitHub link of the starter project: **[https://github.com/nahaQUT/sampleapp_IFQ636.git](https://github.com/nahaQUT/sampleapp_IFQ636.git)
-
----
-
+CI/CD
+GitHub Actions pipeline runs tests and deploys to AWS EC2 automatically on every push to main.
